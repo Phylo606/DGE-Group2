@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DGE_Group_2_WPF_Wireframe", "DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe.csproj", "{F3B97D7C-C676-4E2A-9B0A-86E827CDDEC7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3B97D7C-C676-4E2A-9B0A-86E827CDDEC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3B97D7C-C676-4E2A-9B0A-86E827CDDEC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3B97D7C-C676-4E2A-9B0A-86E827CDDEC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3B97D7C-C676-4E2A-9B0A-86E827CDDEC7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {114936AC-7E96-4D31-9A31-C551428491D8}
+	EndGlobalSection
+EndGlobal
