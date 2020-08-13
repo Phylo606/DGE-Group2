@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<testdata>
+  <testentities>
+    <person>12345679X</person>
+    <room type="2" teacher="Mr Ed">GD224</room>
+  </testentities>
+  <testtimes>
+    <check in="19/6/2020 11:31" out="19/6/2020 13:45" user="123456789X" room="GD224"></check>
+  </testtimes>
+</testdata>
