@@ -55,16 +55,7 @@ namespace DGE_Group_2_WPF_Wireframe
             var data = (XmlElement)xx.SelectSingleNode("testtimes");
 
             //RETRIEVE
-            foreach (XmlElement item in entities.GetElementsByTagName("room"))
-            {
-                var n = new Room()
-                {
-                    Id = item.InnerText,
-                    Teacher = item.GetAttribute("teacher"),
-                    Type = (RoomType)(int.Parse(item.GetAttribute("type")) - 1)
-                };
-                rooms.Add(n);
-            }
+
             foreach (XmlElement item in entities.GetElementsByTagName("person"))
             {
                 var n = new Person()
@@ -73,6 +64,36 @@ namespace DGE_Group_2_WPF_Wireframe
                 };
                 people.Add(n);
             }
+            foreach (XmlElement item in entities.GetElementsByTagName("teacher"))
+            {
+                var n = new Teacher()
+                {
+                    Id = item.InnerText,
+                    Title = item.GetAttribute("title"),
+                    Name = item.GetAttribute("name")
+                };
+                teachers.Add(n);
+            }
+            foreach (XmlElement item in entities.GetElementsByTagName("room"))
+            {
+                var n = new Room()
+                {
+                    Id = item.InnerText,
+                    Type = (RoomType)(int.Parse(item.GetAttribute("type")) - 1)
+                };
+                rooms.Add(n);
+            }
+            foreach (XmlElement item in entities.GetElementsByTagName("class"))
+            {
+                var n = new Class()
+                {
+                    Id = item.InnerText,
+                    Room = rooms.Find(o => o.Id == item.GetAttribute("room")),
+                    Teacher = teachers.Find(o => o.Id == item.GetAttribute("teacher")),
+                    Time = DateTime.Parse(item.GetAttribute("time"))
+                };
+                classes.Add(n);
+            }
             foreach (XmlElement item in data.GetElementsByTagName("check"))
             {
                 var n = new Check()
@@ -80,7 +101,8 @@ namespace DGE_Group_2_WPF_Wireframe
                     DateIn = DateTime.Parse(item.GetAttribute("in")),
                     DateOut = DateTime.Parse(item.GetAttribute("out")),
                     Room = rooms.Find(o => o.Id == item.GetAttribute("room")),
-                    User = people.Find(o => o.Id == item.GetAttribute("user"))
+                    User = people.Find(o => o.Id == item.GetAttribute("user")),
+                    Class = classes.Find(o => o.Id == item.GetAttribute("class"))
 
                 };
                 checks.Add(n);
@@ -93,7 +115,10 @@ namespace DGE_Group_2_WPF_Wireframe
                 _userid.Items.Add(item);
                 _getusers.Items.Add(item);
             }
-
+            foreach (var item in teachers)
+            {
+                ddTeachers.Items.Add(item);
+            }
             foreach (var item in rooms)
             {
                 _searchrooms.Items.Add(item);
@@ -106,14 +131,54 @@ namespace DGE_Group_2_WPF_Wireframe
         /// </summary>
         public void Filter()
         {
-            _history.Items.Clear();
-
-            //placeholder code
-            foreach (var item in checktemp)
+            try
             {
-                _history.Items.Add(item);
+                //clear existing picked visual records
+                _history.Items.Clear();
+
+                //if filters aren't identifed as used...
+                if (!IsSearching)
+                {
+                    // for each item in all visual records
+                    foreach (var item in checktemp)
+                    {
+                        //add it
+                        _history.Items.Add(item);
+                    }
+                }
+                //if filters are identifed as used...
+                else
+                {
+                    // if check in date is ticked but null or if checkout date is ticked but null, throw error
+                    if ((cbCheckIn.IsChecked == true && dpCheckIn.SelectedDate == null) || (cbCheckIn.IsChecked == true && dpCheckOut.SelectedDate == null)) throw new ArgumentException("Please select a respective date(s).");
+
+                    // for each item in "all visual records but if users contains user if user is ticked but if room is room if room is ticked but if type is type if type is checked but if check in date is check in date but if checkout date is checkout date if checkout is ticked but if teacher is teacher if teacher is ticked"...
+                    // [literally 'for each instance returned by a global search in checktemp for "where users contains user if user is ticked and if room is room if room is ticked and if type is type if type is checked and if check in date is check in date and if checkout date is checkout date if checkout is ticked and if teacher is teacher if teacher is ticked"']
+                    foreach (var item in
+                        checktemp.FindAll(o =>
+                            (_ifsearchusers.IsChecked == false || _searchusers.Text.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(o.User)) &&
+                            (cbRoom.IsChecked == false || _searchrooms.Text == o.Room) &&
+                            (cbType.IsChecked == false || txtType.Text == o.Type) &&
+                            (cbCheckIn.IsChecked == false || o.In == dpCheckIn.SelectedDate.Value.ToString("dd/MM/yyyy HH:mm")) &&
+                            (cbCheckOut.IsChecked == false || o.In == dpCheckOut.SelectedDate.Value.ToString("dd/MM/yyyy HH:mm")) &&
+                            (cbTeachers.IsChecked == false || txtTeachers.Text.Split(new string[] { ", " }, StringSplitOptions.RemoveEmptyEntries).ToList().Contains(o.Teacher)))
+                        )
+                    {
+                        //add it
+                        _history.Items.Add(item);
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message + $" ({ex.GetType()})", "Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            tbResults.Text = _history.Items.Count.ToString() + " of " + checktemp.Count.ToString();
+            tbSearching.Text = IsSearching.ToString();
+            status.FontWeight = IsSearching ? FontWeights.Bold : FontWeights.Normal;
 
         }
         /// <summary>
@@ -220,6 +285,7 @@ namespace DGE_Group_2_WPF_Wireframe
         /// </summary>
         public class Check
         {
+            public Class Class { get; set; }
             public Person User { get; set; }
             public Room Room { get; set; }
             public DateTime DateIn { get; set; }
@@ -235,7 +301,7 @@ namespace DGE_Group_2_WPF_Wireframe
                 return new _check
                 {
                     User = item.User.Id,
-                    Teacher = item.Room.Teacher,
+                    Teacher = item.Class.Teacher.ToString(),
                     In = item.DateIn.ToString("dd/MM/yyyy HH:mm"),
                     Out = item.DateOut.ToString("dd/MM/yyyy HH:mm"),
                     Room = item.Room.Id,
@@ -267,6 +333,17 @@ namespace DGE_Group_2_WPF_Wireframe
             Class,
             Office
         }
+        public class Teacher
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Name { get; set; }
+
+            public override string ToString()
+            {
+                return Title + " " + Name;
+            }
+        }
 
         /// <summary>
         /// A room
@@ -275,20 +352,36 @@ namespace DGE_Group_2_WPF_Wireframe
         {
             public RoomType Type { get; set; }
             public string Id { get; set; }
-            public string Teacher { get; set; }
             public override string ToString()
             {
                 return Id;
             }
         }
+
+        public class Class
+        {
+            public string Id { get; set; }
+            public Room Room { get; set; }
+            public Teacher Teacher { get; set; }
+            public DateTime Time { get; set; }
+        }
+
         /// <summary>
         /// The list of rooms
         /// </summary>
         public List<Room> rooms = new List<Room>();
         /// <summary>
+        /// The list of classes
+        /// </summary>
+        public List<Class> classes = new List<Class>();
+        /// <summary>
         /// The list of people
         /// </summary>
         public List<Person> people = new List<Person>();
+        /// <summary>
+        /// A list of teachers
+        /// </summary>
+        public List<Teacher> teachers = new List<Teacher>();
         /// <summary>
         /// The list of undisplayable records
         /// </summary>
@@ -305,26 +398,193 @@ namespace DGE_Group_2_WPF_Wireframe
 
         private void _searchrooms_Copy_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_getusers.SelectedIndex < 1) return;
-            //if the text is still "(Quick Add)" don't do anything (prevents misfiring and infinite loops)
-            var l = _searchusers.Text.Split(new char[] { ',' },StringSplitOptions.RemoveEmptyEntries).Cast<string>().ToList();
-            //output each item in the field as a string with no empties [literally 'let l be the textbox text but with its text split by the character ',' but remove empty strings, and cast it to an enumerable of 'string' and cast it to a list']
-            l.Add(e.AddedItems[0].ToString());
-            //add that new selection (had to use e because the text kept changing back before being read) [literally 'add to l "the first new thing you are talking about but a string"']
-            _searchusers.Text = string.Join(", ", l.Select(o=>o.Trim()));
-            //re-insert all items as a trimmed comma-seperated array of values [literally 'make text joined version of "l but everything is trimmed" by the string ", "']
-            _getusers.SelectedIndex = 0;
-            //go back to "(Quick Add)"
+            if (sender == _getusers)
+            {
+                if (_getusers.SelectedIndex < 1) return;
+                //if the text is still "(Quick Add)" don't do anything (prevents misfiring and infinite loops)
+                var l = _searchusers.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Cast<string>().ToList();
+                //output each item in the field as a string with no empties [literally 'let l be the textbox text but with its text split by the character ',' but remove empty strings, and cast it to an enumerable of 'string' and cast it to a list']
+                l.Add(e.AddedItems[0].ToString());
+                //add that new selection (had to use e because the text kept changing back before being read) [literally 'add to l "the first new thing you are talking about but a string"']
+                _searchusers.Text = string.Join(", ", l.Select(o => o.Trim()));
+                //re-insert all items as a trimmed comma-seperated array of values [literally 'make text joined version of "l but everything is trimmed" by the string ", "']
+                _getusers.SelectedIndex = 0;
+                //go back to "(Quick Add)"
+            }
+            else
+            {
+                if (ddTeachers.SelectedIndex < 1) return;
+                //if the text is still "(Quick Add)" don't do anything (prevents misfiring and infinite loops)
+                var l = txtTeachers.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Cast<string>().ToList();
+                //output each item in the field as a string with no empties [literally 'let l be the textbox text but with its text split by the character ',' but remove empty strings, and cast it to an enumerable of 'string' and cast it to a list']
+                l.Add(e.AddedItems[0].ToString());
+                //add that new selection (had to use e because the text kept changing back before being read) [literally 'add to l "the first new thing you are talking about but a string"']
+                txtTeachers.Text = string.Join(", ", l.Select(o => o.Trim()));
+                //re-insert all items as a trimmed comma-seperated array of values [literally 'make text joined version of "l but everything is trimmed" by the string ", "']
+                ddTeachers.SelectedIndex = 0;
+                //go back to "(Quick Add)"
+            }
+
         }
 
         private void _searchusers_TextChanged(object sender, TextChangedEventArgs e)
         {
-            _ifsearchusers.IsChecked = true;
+            if (sender == txtTeachers)
+                cbTeachers.IsChecked = true;
+            else
+                _ifsearchusers.IsChecked = true;
+
+            if (cbAuto == null) return;
+            if (cbAuto.IsChecked == true) Filter();
         }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             _searchusers.Text = "";
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            IsSearching = true;
+            Filter();
+        }
+
+        private void dpCheckIn_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (dpCheckOut == null) return;
+            if (cbAuto == null) return;
+
+            cbCheckIn.IsChecked = dpCheckIn.SelectedDate != null;
+            cbCheckOut.IsChecked = dpCheckOut.SelectedDate != null;
+            if (cbAuto.IsChecked == true) Filter();
+
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            IsSearching = false;
+            Filter();
+        }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            _ifsearchusers.IsChecked = false;
+            cbCheckIn.IsChecked = false;
+            cbCheckOut.IsChecked = false;
+            cbRoom.IsChecked = false;
+            cbType.IsChecked = false;
+            cbTeachers.IsChecked = false;
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            _ifsearchusers.IsChecked = false;
+            cbCheckIn.IsChecked = false;
+            cbCheckOut.IsChecked = false;
+            cbRoom.IsChecked = false;
+            cbType.IsChecked = false;
+            _searchusers.Text = "";
+            _searchrooms.Text = "";
+            _roomtype.SelectedIndex = 0;
+            dpCheckIn.SelectedDate = null;
+            dpCheckOut.SelectedDate = null;
+            ddCheckIn.SelectedIndex = 0;
+            ddCheckOut.SelectedIndex = 0;
+            cbTeachers.IsChecked = false;
+            txtTeachers.Text = "";
+        }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            txtTeachers.Text = "";
+        }
+
+        private void txtType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+            cbType.IsChecked = true;
+        }
+
+        private void _searchrooms_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+            cbRoom.IsChecked = true;
+        }
+
+        private void ddCheckIn_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+            cbCheckIn.IsChecked = true;
+        }
+
+        private void ddCheckOut_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            cbCheckOut.IsChecked = true;
+        }
+
+        private void cbAuto_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto.IsChecked == true && !IsSearching)
+            {
+                if (MessageBox.Show("This action is not applicable while not Seeing Search. Do you wish to search now? Click No to manually activate AutoSearch using Search later.\r\rThe action should work automatically afterwards as long as you are Seeing Search.", "Search", MessageBoxButton.YesNo, MessageBoxImage.Exclamation) == MessageBoxResult.Yes)
+                {
+                    IsSearching = true;
+                    Filter();
+                }
+
+            }
+        }
+
+        private void _ifsearchusers_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void cbTeachers_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void cbType_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void cbRoom_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void cbCheckIn_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void cbCheckOut_Checked(object sender, RoutedEventArgs e)
+        {
+            if (cbAuto == null) return;
+
+            if (cbAuto.IsChecked == true) Filter();
         }
     }
 }

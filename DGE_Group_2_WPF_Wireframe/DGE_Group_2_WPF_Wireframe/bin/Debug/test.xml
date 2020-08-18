@@ -1,10 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <testdata>
   <testentities>
+    <teacher title="Mr" name="Ed">1</teacher>
     <person>123456789X</person>
-    <room type="2" teacher="Mr Ed">GD224</room>
+    <room type="2">GD224</room>
+    <class room="GD224" teacher="1" time="19/6/2020 13:45">1</class>
   </testentities>
   <testtimes>
-    <check in="19/6/2020 11:31" out="19/6/2020 13:45" user="123456789X" room="GD224"></check>
+    <check in="19/6/2020 11:31" out="19/6/2020 13:45" user="123456789X" class="1" room="GD224"></check>
   </testtimes>
 </testdata>

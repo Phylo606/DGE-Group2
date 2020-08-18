@@ -7,26 +7,11 @@
         mc:Ignorable="d"
         Title="DGE Attendence Tracker" Height="553" Width="818">
     <Grid Background="LightGray">
-        <!--<Button x:Name="Time_Entered" Content="Time Entered" HorizontalAlignment="Left" Margin="24,28,0,0" VerticalAlignment="Top" Width="223" Click="Button_Click" Height="50" FontSize="16"/>
-        <Button Content="Time Left" HorizontalAlignment="Left" Margin="281,28,0,0" VerticalAlignment="Top" Width="222" Height="50" FontSize="16"/>
-        <Button Content="Reporting" HorizontalAlignment="Left" Margin="538,28,0,0" VerticalAlignment="Top" Width="225" Height="50" FontSize="16"/>
-        <Label Content="User ID" HorizontalAlignment="Left" Margin="133,113,0,0" VerticalAlignment="Top" Width="69" FontSize="16"/>
-        <TextBox HorizontalAlignment="Left" Height="31" Margin="220,113,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="127" FontSize="16"/>
-        <Label Content="Room" HorizontalAlignment="Left" Margin="144,185,0,0" VerticalAlignment="Top" FontSize="16" RenderTransformOrigin="1.173,2.18"/>
-        <TextBox HorizontalAlignment="Left" Height="31" Margin="220,185,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="127" FontSize="16"/>
-        <Label Content="Date and Time Left" HorizontalAlignment="Left" Margin="52,258,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <DatePicker HorizontalAlignment="Left" Margin="220,258,0,0" VerticalAlignment="Top" Height="31" Width="136" FontSize="16"/>
-        <TextBox HorizontalAlignment="Left" Height="31" Margin="380,258,0,0" TextWrapping="Wrap" Text="Hour" VerticalAlignment="Top" Width="47" TextChanged="TextBox_TextChanged_1" FontSize="16"/>
-        <TextBox HorizontalAlignment="Left" Height="31" Margin="443,258,0,0" TextWrapping="Wrap" Text="Minute
-                 " VerticalAlignment="Top" Width="60" TextChanged="TextBox_TextChanged_1" FontSize="16"/>
-        <Label Content=":" HorizontalAlignment="Left" Margin="427,254,0,0" VerticalAlignment="Top" Height="31" Width="39" FontSize="16"/>
-        <RadioButton Content="Class" HorizontalAlignment="Left" Margin="222,321,0,0" VerticalAlignment="Top"/>
-        <RadioButton Content="Office" HorizontalAlignment="Left" Margin="319,321,0,0" VerticalAlignment="Top"/>
-        <Button Content="Submit" HorizontalAlignment="Left" Margin="76,343,0,0" VerticalAlignment="Top" Width="120" Height="31" FontSize="16"/>-->
+
         <Border Margin="2" CornerRadius="0,10,0,0" Background="Gray">
 
             <TabControl SelectedIndex="1" x:Name="_maintabs" SelectionChanged="TabControl_SelectionChanged" Margin="2">
-                <TabItem>
+                <TabItem Visibility="Collapsed">
                     <TabItem.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="DarkBlue" Offset="0"/>
@@ -75,8 +60,8 @@
                                     <TextBox x:Name="_actiontime" HorizontalAlignment="Left" Height="23" Margin="205,82,0,-23" TextWrapping="Wrap" Text="00:00" VerticalAlignment="Top" Width="66" RenderTransformOrigin="0.469,0.638"/>
                                 </Grid>
                             </GroupBox>
-                            <Button FontSize="15" Background="MediumBlue" Foreground="White" Content="Submit!" HorizontalAlignment="Left" Margin="10,267,0,0" VerticalAlignment="Top" Width="90" Click="Button_Click_1"/>
-                            <Button Content="Clear" HorizontalAlignment="Left" Margin="105,267,0,0" Width="75" Height="20" VerticalAlignment="Top"/>
+                            <Button FontSize="15" Background="MediumBlue" Foreground="White" Content="Submit!" HorizontalAlignment="Left" Margin="10,338,0,0" VerticalAlignment="Top" Width="90" Click="Button_Click_1"/>
+                            <Button Content="Clear" HorizontalAlignment="Left" Margin="105,338,0,0" Width="75" Height="20" VerticalAlignment="Top"/>
 
                         </Grid>
                     </ScrollViewer>
@@ -89,36 +74,54 @@
                         </StackPanel>
                     </TabItem.Header>
                     <Grid>
-                        <GroupBox Header="Search" Height="153" Margin="10,10,10,0" VerticalAlignment="Top">
+                        <GroupBox Header="Search" Height="171" Margin="10,10,10,0" VerticalAlignment="Top">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                                 <Grid>
-                                    <CheckBox x:Name="_ifsearchusers" Content="Users" HorizontalAlignment="Left" Margin="9,7,0,0" VerticalAlignment="Top"/>
+                                    <CheckBox x:Name="_ifsearchusers" Content="Users" HorizontalAlignment="Left" Margin="9,7,0,0" VerticalAlignment="Top" Checked="_ifsearchusers_Checked"/>
                                     <TextBox x:Name="_searchusers" Height="23" Margin="85,7,0,0" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="389" TextChanged="_searchusers_TextChanged"/>
                                     <ComboBox SelectionChanged="_searchrooms_Copy_SelectionChanged"  SelectedIndex="0" x:Name="_getusers" HorizontalAlignment="Left" Margin="479,7,0,0" VerticalAlignment="Top" Width="120">
                                         <TextBlock IsEnabled="False">(Quick Add)</TextBlock>
                                     </ComboBox>
                                     <Button Content="Clear" Click="Button_Click_2"  HorizontalAlignment="Left" Margin="604,6,0,0" VerticalAlignment="Top" Width="75" Height="24"/>
-                                    <CheckBox Content="Type" HorizontalAlignment="Left" Margin="9,31,0,0" VerticalAlignment="Top"/>
-                                    <ComboBox SelectedIndex="0" IsEditable="False" HorizontalAlignment="Left" Margin="65,31,0,0" VerticalAlignment="Top" Width="120">
+                                    <CheckBox x:Name="cbTeachers" Content="Teachers" HorizontalAlignment="Left" Margin="9,35,0,0" VerticalAlignment="Top" Checked="cbTeachers_Checked"/>
+                                    <TextBox x:Name="txtTeachers" Height="23" Margin="85,35,0,0" Text="" VerticalAlignment="Top" HorizontalAlignment="Left" Width="389" TextChanged="_searchusers_TextChanged"/>
+                                    <ComboBox SelectionChanged="_searchrooms_Copy_SelectionChanged"  SelectedIndex="0" x:Name="ddTeachers" HorizontalAlignment="Left" Margin="479,35,0,0" VerticalAlignment="Top" Width="120">
+                                        <TextBlock IsEnabled="False"><Run Text="(Quick Add)"/></TextBlock>
+                                    </ComboBox>
+                                    <Button Content="Clear" Click="Button_Click_6"  HorizontalAlignment="Left" Margin="604,34,0,0" VerticalAlignment="Top" Width="75" Height="24"/>
+                                    <CheckBox x:Name="cbType" Content="Type" HorizontalAlignment="Left" Margin="9,62,0,0" VerticalAlignment="Top" Checked="cbType_Checked"/>
+                                    <ComboBox x:Name="txtType" SelectedIndex="0" IsEditable="False" HorizontalAlignment="Left" Margin="65,62,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="txtType_SelectionChanged">
                                         <ComboBoxItem>Class</ComboBoxItem>
                                         <ComboBoxItem>Office</ComboBoxItem>
                                     </ComboBox>
-                                    <CheckBox Content="Room" HorizontalAlignment="Left" Margin="9,53,0,0" VerticalAlignment="Top"/>
-                                    <ComboBox x:Name="_searchrooms" IsEditable="True" HorizontalAlignment="Left" Margin="65,53,0,0" VerticalAlignment="Top" Width="120"/>
-                                    <CheckBox Content="Checked In on" HorizontalAlignment="Left" Margin="240,31,0,0" VerticalAlignment="Top"/>
-                                    <DatePicker HorizontalAlignment="Left" Margin="354,29,0,0" VerticalAlignment="Top" Width="120"/>
-                                    <CheckBox Content="Checked Out on" HorizontalAlignment="Left" Margin="240,53,0,0" VerticalAlignment="Top"/>
-                                    <DatePicker HorizontalAlignment="Left" Margin="354,53,0,0" VerticalAlignment="Top" Width="120"/>
-                                    <Button ToolTip="Start or refresh the search using the filters above" FontSize="15" Background="Yellow" Content="Search" HorizontalAlignment="Left" Margin="5,88,0,0" VerticalAlignment="Top" Width="75"/>
-                                    <Button ToolTip="Stop searching the data and show everything (without physically resetting filters)" Background="Red" Foreground="White" Content="See All" HorizontalAlignment="Left" Margin="85,88,0,0" VerticalAlignment="Top" Width="75"/>
-                                    <Button Content="Reset Checks" HorizontalAlignment="Left" Margin="165,88,0,0" VerticalAlignment="Top" Width="75"/>
-                                    <Button Content="Reset All" HorizontalAlignment="Left" Margin="245,88,0,0" VerticalAlignment="Top" Width="75"/>
+                                    <CheckBox x:Name="cbRoom" Content="Room" HorizontalAlignment="Left" Margin="9,84,0,0" VerticalAlignment="Top" Checked="cbRoom_Checked"/>
+                                    <ComboBox x:Name="_searchrooms" IsEditable="True" HorizontalAlignment="Left" Margin="65,84,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="_searchrooms_SelectionChanged"/>
+                                    <CheckBox x:Name="cbCheckIn" Content="Checked In" HorizontalAlignment="Left" Margin="240,62,0,0" VerticalAlignment="Top" Checked="cbCheckIn_Checked"/>
+                                    <ComboBox x:Name="ddCheckIn" SelectedIndex="0" HorizontalAlignment="Left" Margin="333,62,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddCheckIn_SelectionChanged">
+                                        <ComboBoxItem>On Day</ComboBoxItem>
+                                        <ComboBoxItem>On or After</ComboBoxItem>
+                                        <ComboBoxItem>On or Before</ComboBoxItem>
+                                    </ComboBox>
+                                    <DatePicker SelectedDateChanged="dpCheckIn_SelectedDateChanged" x:Name="dpCheckIn" HorizontalAlignment="Left" Margin="453,62,0,0" VerticalAlignment="Top" Width="120"/>
+                                    <CheckBox x:Name="cbCheckOut" Content="Checked Out" HorizontalAlignment="Left" Margin="240,84,0,0" VerticalAlignment="Top" Checked="cbCheckOut_Checked"/>
+                                    <ComboBox x:Name="ddCheckOut" SelectedIndex="0" HorizontalAlignment="Left" Margin="333,84,0,0" VerticalAlignment="Top" Width="120" SelectionChanged="ddCheckOut_SelectionChanged">
+                                        <ComboBoxItem>On Day</ComboBoxItem>
+                                        <ComboBoxItem>On or After</ComboBoxItem>
+                                        <ComboBoxItem>On or Before</ComboBoxItem>
+                                    </ComboBox>
+                                    <DatePicker SelectedDateChanged="dpCheckIn_SelectedDateChanged" x:Name="dpCheckOut" HorizontalAlignment="Left" Margin="453,84,0,0" VerticalAlignment="Top" Width="120"/>
+                                    <Button ToolTip="Start or refresh the search using the filters above" FontSize="15" Background="Yellow" Content="Search" HorizontalAlignment="Left" Margin="5,118,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+                                    <Button ToolTip="Stop searching the data and show everything (without physically resetting filters)" Background="Red" Foreground="White" Content="See All" HorizontalAlignment="Left" Margin="85,118,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3"/>
+                                    <Button Content="Reset Checks" HorizontalAlignment="Left" Margin="165,118,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_4"/>
+                                    <Button Content="Reset All" HorizontalAlignment="Left" Margin="245,118,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_5"/>
+                                    <CheckBox x:Name="cbAuto" Content="AutoSearch (requires Seeing Search true)" HorizontalAlignment="Left" Margin="329,118,0,0" VerticalAlignment="Top" Checked="cbAuto_Checked"/>
+
 
 
                                 </Grid>
                             </ScrollViewer>
                         </GroupBox>
-                        <GroupBox Header="Results" Margin="10,168,10,22">
+                        <GroupBox Header="Results" Margin="10,186,10,22">
                             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Visible">
                                 <ListView x:Name="_history">
                                     <ListView.View>
@@ -134,15 +137,15 @@
                                 </ListView>
                             </ScrollViewer>
                         </GroupBox>
-                        <StatusBar VerticalAlignment="Bottom">
+                        <StatusBar x:Name="status" VerticalAlignment="Bottom">
                             <TextBlock>Seeing Search:</TextBlock>
-                            <TextBlock>False</TextBlock>
+                            <TextBlock x:Name="tbSearching">False</TextBlock>
                             <Separator></Separator>
                             <TextBlock>Number of Results:</TextBlock>
-                            <TextBlock>0</TextBlock>
+                            <TextBlock x:Name="tbResults">0</TextBlock>
                             <Separator></Separator>
-                            <TextBlock>Number of Days Specified:</TextBlock>
-                            <TextBlock>0</TextBlock>
+                            <TextBlock Visibility="Collapsed">Number of Days Specified:</TextBlock>
+                            <TextBlock Visibility="Collapsed" x:Name="tbDays">0</TextBlock>
                         </StatusBar>
                     </Grid>
                 </TabItem>
