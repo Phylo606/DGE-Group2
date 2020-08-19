@@ -73,9 +73,29 @@ namespace DGE_Group_2_WPF_Wireframe.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap delete {
+            get {
+                object obj = ResourceManager.GetObject("delete", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap edit {
             get {
                 object obj = ResourceManager.GetObject("edit", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Eyedropper {
+            get {
+                object obj = ResourceManager.GetObject("Eyedropper", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -111,14 +131,26 @@ namespace DGE_Group_2_WPF_Wireframe.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rename_template {
+            get {
+                object obj = ResourceManager.GetObject("rename_template", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;testdata&gt;
         ///  &lt;testentities&gt;
+        ///    &lt;teacher title=&quot;Mr&quot; name=&quot;Ed&quot;&gt;1&lt;/teacher&gt;
         ///    &lt;person&gt;123456789X&lt;/person&gt;
-        ///    &lt;room type=&quot;2&quot; teacher=&quot;Mr Ed&quot;&gt;GD224&lt;/room&gt;
+        ///    &lt;room type=&quot;2&quot;&gt;GD224&lt;/room&gt;
+        ///    &lt;class room=&quot;GD224&quot; teacher=&quot;1&quot; time=&quot;19/6/2020 13:45&quot;&gt;1&lt;/class&gt;
         ///  &lt;/testentities&gt;
         ///  &lt;testtimes&gt;
-        ///    &lt;check in=&quot;19/6/2020 11:31&quot; out=&quot;19/6/2020 13:45&quot; user=&quot;123456789X&quot; room=&quot;GD224&quot;&gt;&lt;/check&gt;
+        ///    &lt;check in=&quot;19/6/2020 11:31&quot; out=&quot;19/6/2020 13:45&quot; user=&quot;123456789X&quot; class=&quot;1&quot; room=&quot;GD224&quot;&gt;&lt;/check&gt;
         ///  &lt;/testtimes&gt;
         ///&lt;/testdata&gt;.
         /// </summary>

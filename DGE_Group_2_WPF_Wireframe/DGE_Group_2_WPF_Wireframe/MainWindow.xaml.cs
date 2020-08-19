@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -585,6 +586,89 @@ namespace DGE_Group_2_WPF_Wireframe
             if (cbAuto == null) return;
 
             if (cbAuto.IsChecked == true) Filter();
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if (gbEdit == null) return;
+            gbEdit.Visibility = _Edit.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            gbView.Margin = _Edit.IsChecked == true ? new Thickness(0, 0, 439, 0) : new Thickness(0);
+
+        }
+
+        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (gbEdit == null) return;
+
+            gbFilter.Visibility = _Filter.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            tbClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 198, 0, 0) : new Thickness(0);
+            svClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 229, 0, 0) : new Thickness(0, 229 - 198, 0, 0);
+        }
+
+        private void btnGet_Click(object sender, RoutedEventArgs e)
+        {
+            var loop = false;
+
+            do
+            {
+
+
+                var d = new Dialog("Get", "What attribute of the selection would you like to copy to the editor?", "", System.Drawing.SystemIcons.Question);
+                d.btns.Orientation = Orientation.Vertical;
+                d.WindowStartupLocation = WindowStartupLocation.Manual;
+                d.Top = 100;
+                d.Left = 100;
+
+                var lb = new ListBox();
+                lb.Items.Add("Room type");
+                lb.Items.Add("Room");
+                lb.Items.Add("Day");
+                lb.Items.Add("Time start");
+                lb.Items.Add("Time end");
+                lb.Items.Add("Date start");
+                lb.Items.Add("Date end");
+                lb.Items.Add("Teacher");
+                lb.Items.Add("Label");
+
+                d.btns.Children.Add(lb);
+
+                d.NewButton("Apply", 1);
+                d.NewButton("OK", 2);
+                d.NewButton("Cancel", 3);
+
+                d.btns.Children[1].IsEnabled = false;
+                d.btns.Children[2].IsEnabled = false;
+                getListBox = lb;
+                getApplyButton = (Button)d.btns.Children[1];
+                getOKButton = (Button)d.btns.Children[2];
+
+                lb.SelectionChanged += Lb_SelectionChanged;
+                d.ShowDialog();
+
+                loop = d.MessageBoxCode == 1;
+
+
+                txtLabel.Text = "Test String";
+
+            }
+            while (loop);
+        }
+
+        ListBox getListBox;
+        Button getApplyButton;
+        Button getOKButton;
+
+
+
+        private void Lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            getApplyButton.IsEnabled = getListBox.SelectedIndex != -1;
+            getOKButton.IsEnabled = getListBox.SelectedIndex != -1;
         }
     }
 }

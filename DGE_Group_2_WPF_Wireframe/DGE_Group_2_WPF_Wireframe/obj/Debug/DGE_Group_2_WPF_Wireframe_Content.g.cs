@@ -8,7 +8,10 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/rename_template.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/add.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/eyedropper.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/delete.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/folder_template.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/page.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/edit.png")]

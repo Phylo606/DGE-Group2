@@ -1,0 +1,23 @@
+﻿<Window x:Class="DGE_Group_2_WPF_Wireframe.Dialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DGE_Group_2_WPF_Wireframe"
+        mc:Ignorable="d"
+        Title="Dialog"  SizeToContent="WidthAndHeight" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <StackPanel Orientation="Horizontal"  Loaded="Grid_Loaded">
+        <Grid Background="White">
+            <Image Stretch="None" x:Name="img" Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left" />
+        </Grid>
+        <StackPanel Margin="10" >
+            <StackPanel Margin="0,0,0,10">
+                <TextBlock Margin="0,0,0,5" Width="300" TextWrapping="Wrap" x:Name="t" Text="Your text here." FontSize="15"></TextBlock>
+                <TextBlock  x:Name="c" MinHeight="40" Width="300" TextWrapping="Wrap" Text="The quick brown fox jumped over the lazy dog."></TextBlock>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" x:Name="btns">
+
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</Window>
