@@ -110,6 +110,7 @@ namespace DGE_Group_2_WPF_Wireframe
                 checktemp.Add(Check.CreateUIItem(n));
             }
 
+
             //DISPLAY
             foreach (var item in people)
             {
@@ -119,10 +120,14 @@ namespace DGE_Group_2_WPF_Wireframe
             foreach (var item in teachers)
             {
                 ddTeachers.Items.Add(item);
+                cbTeacher.Items.Add(item);
+                viewTeacher.Items.Add(item);
             }
             foreach (var item in rooms)
             {
                 _searchrooms.Items.Add(item);
+                viewRoom.Items.Add(item);
+                editRoom.Items.Add(item);
             }
             FilterRooms();
             Filter();
@@ -392,6 +397,45 @@ namespace DGE_Group_2_WPF_Wireframe
         /// </summary>
         public List<_check> checktemp = new List<_check>();
 
+        public class ClassGenerator
+        {
+            public RoomType RoomType { get; set; }
+            public Room Room { get; set; }
+            public DayOfWeek Day { get; set; }
+            public TimeSpan StartTime { get; set; }
+            public TimeSpan EndTime { get; set; }
+            public DateTime? StartDate { get; set; } // nullable DateTime
+            public DateTime? EndDate { get; set; } // nullable DateTime
+            public string Label { get; set; } = "";
+            public Teacher Teacher { get; set; }
+
+            public static _class CreateUIItem(ClassGenerator cg)
+            {
+                return new _class
+                {
+                    Teacher = cg.Teacher.ToString(),
+                    Label = cg.Label,
+                    Times = $"{cg.StartTime.ToString("HH:mm")} to {cg.EndTime.ToString("HH:mm")}",
+                    Day = cg.Day.ToString(),
+                    StartDate = (cg.StartDate == null ? "" : cg.StartDate.Value.ToShortDateString()),
+                    EndDate = (cg.EndDate == null ? "" : cg.EndDate.Value.ToShortDateString())
+                };
+
+            }
+
+        }
+
+        public class _class
+        {
+            public string Teacher { get; set; }
+            public string Label { get; set; }
+            public string Room { get; set; }
+            public string Times { get; set; }
+            public string Day { get; set; }
+            public string StartDate { get; set; }
+            public string EndDate { get; set; }
+
+        }
         private void _roomtype_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FilterRooms();

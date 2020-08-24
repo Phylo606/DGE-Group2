@@ -180,19 +180,22 @@
 
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Width="100" Margin="5">Room is a</CheckBox>
-                                            <ComboBox Width="100"></ComboBox>
+                                            <ComboBox Width="100" SelectedIndex="0">
+                                                <ComboBoxItem>Class</ComboBoxItem>
+                                                <ComboBoxItem>Office</ComboBoxItem>
+                                            </ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Width="100" Margin="5">Room is</CheckBox>
-                                            <ComboBox Width="100" IsEditable="True"></ComboBox>
+                                            <ComboBox x:Name="viewRoom" Width="100" IsEditable="True"></ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Width="100" Margin="5">Teacher is</CheckBox>
-                                            <ComboBox Width="100" IsEditable="True"></ComboBox>
+                                            <ComboBox x:Name="viewTeacher" Width="100" IsEditable="True"></ComboBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <CheckBox Width="100" Margin="5">Label contains</CheckBox>
-                                            <TextBox Width="150"></TextBox>
+                                            <TextBox x:Name="viewLabel" Width="150"></TextBox>
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Button Width="100">Clear Checks</Button>
@@ -248,7 +251,7 @@
                                 <GroupBox Header="If..." Height="178" VerticalAlignment="Top">
                                     <Grid>
                                         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Room is" VerticalAlignment="Top"/>
-                                        <ComboBox IsEditable="True" HorizontalAlignment="Left" Margin="180,10,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="-0.746,-1.197"/>
+                                        <ComboBox x:Name="editRoom" IsEditable="True" HorizontalAlignment="Left" Margin="180,10,0,0" VerticalAlignment="Top" Width="105" RenderTransformOrigin="-0.746,-1.197"/>
                                         <TextBlock HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="Day is" VerticalAlignment="Top"/>
                                         <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Margin="90,36,0,0" VerticalAlignment="Top" Width="195" RenderTransformOrigin="-0.746,-1.197">
                                             <ComboBoxItem>Monday</ComboBoxItem>
@@ -260,19 +263,19 @@
                                             <ComboBoxItem>Sunday</ComboBoxItem>
                                         </ComboBox>
                                         <TextBlock HorizontalAlignment="Left" Margin="10,63,0,0" TextWrapping="Wrap" Text="Time is between" VerticalAlignment="Top"/>
-                                        <TextBox HorizontalAlignment="Left" Height="23" Margin="101,63,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="51"/>
+                                        <TextBox HorizontalAlignment="Left" Height="23" Margin="101,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51"/>
                                         <TextBlock HorizontalAlignment="Left" Margin="155,62,0,0" TextWrapping="Wrap" Text="and" VerticalAlignment="Top" RenderTransformOrigin="0.451,-0.877"/>
-                                        <TextBox HorizontalAlignment="Left" Height="23" Margin="180,63,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="51"/>
+                                        <TextBox HorizontalAlignment="Left" Height="23" Margin="180,63,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="51"/>
                                         <ComboBox SelectedIndex="0" HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" Width="85" RenderTransformOrigin="-0.746,-1.197">
                                             <ComboBoxItem>Class</ComboBoxItem>
                                             <ComboBoxItem>Office</ComboBoxItem>
                                         </ComboBox>
-                                        <CheckBox Content="Date is or occurs after*" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top">
+                                        <CheckBox x:Name="cbStart" Content="Date is or occurs after*" HorizontalAlignment="Left" Margin="10,97,0,0" VerticalAlignment="Top">
 
                                         </CheckBox>
-                                        <DatePicker HorizontalAlignment="Left" Margin="180,92,0,0" VerticalAlignment="Top" Width="204"/>
-                                        <CheckBox Content="Date is or occurs before*" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top"/>
-                                        <DatePicker HorizontalAlignment="Left" Margin="180,121,0,0" VerticalAlignment="Top" Width="204"/>
+                                        <DatePicker x:Name="dpStart" HorizontalAlignment="Left" Margin="180,92,0,0" VerticalAlignment="Top" Width="204"/>
+                                        <CheckBox x:Name="cbEnd" Content="Date is or occurs before*" HorizontalAlignment="Left" Margin="10,126,0,0" VerticalAlignment="Top"/>
+                                        <DatePicker x:Name="dpEnd" HorizontalAlignment="Left" Margin="180,121,0,0" VerticalAlignment="Top" Width="204"/>
 
                                     </Grid>
                                 </GroupBox>
@@ -281,7 +284,7 @@
                                         <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Class Label*" VerticalAlignment="Top">
                                         </TextBlock>
                                         <TextBlock HorizontalAlignment="Left" Margin="10,36,0,0" TextWrapping="Wrap" Text="Teacher is" VerticalAlignment="Top"/>
-                                        <ComboBox IsEditable="True" HorizontalAlignment="Left" Margin="90,36,0,0" VerticalAlignment="Top" Width="195" RenderTransformOrigin="-0.746,-1.197">
+                                        <ComboBox x:Name="cbTeacher" IsEditable="True" HorizontalAlignment="Left" Margin="90,36,0,0" VerticalAlignment="Top" Width="195" RenderTransformOrigin="-0.746,-1.197">
 
                                         </ComboBox>
                                         <TextBox x:Name="txtLabel" HorizontalAlignment="Left" Height="23" Margin="90,9,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="195"/>
