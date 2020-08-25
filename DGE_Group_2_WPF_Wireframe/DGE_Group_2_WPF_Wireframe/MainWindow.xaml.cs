@@ -120,14 +120,14 @@ namespace DGE_Group_2_WPF_Wireframe
             foreach (var item in teachers)
             {
                 ddTeachers.Items.Add(item);
-                cbTeacher.Items.Add(item);
-                viewTeacher.Items.Add(item);
+                //cbTeacher.Items.Add(item);
+                //viewTeacher.Items.Add(item);
             }
             foreach (var item in rooms)
             {
                 _searchrooms.Items.Add(item);
-                viewRoom.Items.Add(item);
-                editRoom.Items.Add(item);
+                //viewRoom.Items.Add(item);
+                //editRoom.Items.Add(item);
             }
             FilterRooms();
             Filter();
@@ -249,24 +249,76 @@ namespace DGE_Group_2_WPF_Wireframe
                 //
                 //
                 //
+                Check checkinFound = null;
+
+                if (_directioncombo.SelectedIndex == 1)
+                {
+
+
+                    foreach (var item in checks)
+                    {
+                        if (item.Class == _roomid.SelectedItem && item.User.Id == _userid.Text && item.DateIn.DayOfYear == _actiondate.SelectedDate.Value.DayOfYear && item.DateIn.TimeOfDay <= TimeSpan.Parse(_actiontime.Text) && item.DateOut == null)
+                        {
+                            var totalLength = (TimeSpan.Parse(_actiontime.Text) - item.DateIn.TimeOfDay);
+                            var dd = (MessageBox.Show($"Is this what you are checking out of?\r\r" +
+                                $"{item.Class}" +
+                                $"{item.User}" +
+                                $"check in since {item.DateIn}\r\r" +
+                                $"WARNING: Make sure the check in time is correct before finishing. This may or may not be the desired block, as any block on the day with the check in date before the checkout date and no existing checkout date is highlighted.\r" +
+                                $"Proposed attendence length: {totalLength.TotalHours} hours {totalLength.TotalMinutes} minutes.  \r" +
+                                $"\r\r" +
+                                $"Click Yes to finish" +
+                                $"Click No to find next" +
+                                $"Click Cancel to cancel search",
+                                "Results", MessageBoxButton.YesNoCancel, MessageBoxImage.Information));
+
+                            if (dd == MessageBoxResult.Cancel) return;
+                            if (dd == MessageBoxResult.Yes)
+                            {
+                                checkinFound = item;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (checkinFound == null) throw new Exception("Either no results were found or the user skipped through the results. Please make sure that you have entered the correct data and a checkout time that is greater than or equal to a check in time on the same day.");
 
 
 
+
+
+                }
                 var d = MessageBox.Show(
-                    $"Are you certain this what you are doing?\r" +
-                    $"\r" +
-                    $"User '{_userid.Text}' is   {((ComboBoxItem)_directioncombo.SelectedItem).Content.ToString().Remove(2)} \r" +
-                    $"checking {(_directioncombo.SelectedIndex == 0 ? "INTO" : "OUT OF") } {_roomtype.Text.Remove(_roomtype.Text.Length - 3)} '{_roomid.Text}'\r" +
-                    $"at '{_actiondate.SelectedDate.Value.ToLongDateString()} {_actiontime.Text}'\r" +
-                    $"\r" +
-                    $"Click OK to finish or Cancel to return.",
-                    "Submit", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                       $"Are you certain this what you are doing?\r" +
+                       $"\r" +
+                       $"User '{_userid.Text}' is   {((ComboBoxItem)_directioncombo.SelectedItem).Content.ToString().Remove(2)} \r" +
+                       $"checking {(_directioncombo.SelectedIndex == 0 ? "INTO" : "OUT OF") } {_roomtype.Text.Remove(_roomtype.Text.Length - 3)} '{_roomid.Text}'\r" +
+                       $"at '{_actiondate.SelectedDate.Value.ToLongDateString()} {_actiontime.Text}'\r" +
+                       $"\r" +
+                       $"Click OK to finish or Cancel to return.",
+                       "Submit", MessageBoxButton.OKCancel, MessageBoxImage.Information);
 
                 if (d == MessageBoxResult.OK)//if previous message box says OK
                 {
-                    //do stuff...
+
+
+                    if (_directioncombo.SelectedIndex == 0)
+                    {
+
+                        //do stuff (check in)
+
+                    }
+                    else
+                    {
+
+                        //do stuff (check out) (with checkinFound)
+
+                    }
+
+
                 }
 
+                
             }
             catch (Exception ex)
             {
@@ -370,6 +422,11 @@ namespace DGE_Group_2_WPF_Wireframe
             public Room Room { get; set; }
             public Teacher Teacher { get; set; }
             public DateTime Time { get; set; }
+
+            public override string ToString()
+            {
+                return $"{Id} by {Teacher} in {Room} at {Time.ToString("HH:mm")}";
+            }
         }
 
         /// <summary>
@@ -637,82 +694,82 @@ namespace DGE_Group_2_WPF_Wireframe
 
         }
 
-        private void ToggleButton_Checked(object sender, RoutedEventArgs e)
-        {
-            if (gbEdit == null) return;
-            gbEdit.Visibility = _Edit.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            gbView.Margin = _Edit.IsChecked == true ? new Thickness(0, 0, 439, 0) : new Thickness(0);
+        //private void ToggleButton_Checked(object sender, RoutedEventArgs e)
+        //{
+        //    if (gbEdit == null) return;
+        //    gbEdit.Visibility = _Edit.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        //    gbView.Margin = _Edit.IsChecked == true ? new Thickness(0, 0, 439, 0) : new Thickness(0);
 
-        }
+        //}
 
-        private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (gbEdit == null) return;
+        //private void ToggleButton_Unchecked(object sender, RoutedEventArgs e)
+        //{
+        //    if (gbEdit == null) return;
 
-            gbFilter.Visibility = _Filter.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            tbClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 198, 0, 0) : new Thickness(0);
-            svClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 229, 0, 0) : new Thickness(0, 229 - 198, 0, 0);
-        }
+        //    gbFilter.Visibility = _Filter.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+        //    tbClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 198, 0, 0) : new Thickness(0);
+        //    svClass.Margin = _Filter.IsChecked == true ? new Thickness(0, 229, 0, 0) : new Thickness(0, 229 - 198, 0, 0);
+        //}
 
-        private void btnGet_Click(object sender, RoutedEventArgs e)
-        {
-            var loop = false;
+        //private void btnGet_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var loop = false;
 
-            do
-            {
-
-
-                var d = new Dialog("Get", "What attribute of the selection would you like to copy to the editor?", "", System.Drawing.SystemIcons.Question);
-                d.btns.Orientation = Orientation.Vertical;
-                d.WindowStartupLocation = WindowStartupLocation.Manual;
-                d.Top = 100;
-                d.Left = 100;
-
-                var lb = new ListBox();
-                lb.Items.Add("Room type");
-                lb.Items.Add("Room");
-                lb.Items.Add("Day");
-                lb.Items.Add("Time start");
-                lb.Items.Add("Time end");
-                lb.Items.Add("Date start");
-                lb.Items.Add("Date end");
-                lb.Items.Add("Teacher");
-                lb.Items.Add("Label");
-
-                d.btns.Children.Add(lb);
-
-                d.NewButton("Apply", 1);
-                d.NewButton("OK", 2);
-                d.NewButton("Cancel", 3);
-
-                d.btns.Children[1].IsEnabled = false;
-                d.btns.Children[2].IsEnabled = false;
-                getListBox = lb;
-                getApplyButton = (Button)d.btns.Children[1];
-                getOKButton = (Button)d.btns.Children[2];
-
-                lb.SelectionChanged += Lb_SelectionChanged;
-                d.ShowDialog();
-
-                loop = d.MessageBoxCode == 1;
+        //    do
+        //    {
 
 
-                txtLabel.Text = "Test String";
+        //        var d = new Dialog("Get", "What attribute of the selection would you like to copy to the editor?", "", System.Drawing.SystemIcons.Question);
+        //        d.btns.Orientation = Orientation.Vertical;
+        //        d.WindowStartupLocation = WindowStartupLocation.Manual;
+        //        d.Top = 100;
+        //        d.Left = 100;
 
-            }
-            while (loop);
-        }
+        //        var lb = new ListBox();
+        //        lb.Items.Add("Room type");
+        //        lb.Items.Add("Room");
+        //        lb.Items.Add("Day");
+        //        lb.Items.Add("Time start");
+        //        lb.Items.Add("Time end");
+        //        lb.Items.Add("Date start");
+        //        lb.Items.Add("Date end");
+        //        lb.Items.Add("Teacher");
+        //        lb.Items.Add("Label");
 
-        ListBox getListBox;
-        Button getApplyButton;
-        Button getOKButton;
+        //        d.btns.Children.Add(lb);
+
+        //        d.NewButton("Apply", 1);
+        //        d.NewButton("OK", 2);
+        //        d.NewButton("Cancel", 3);
+
+        //        d.btns.Children[1].IsEnabled = false;
+        //        d.btns.Children[2].IsEnabled = false;
+        //        getListBox = lb;
+        //        getApplyButton = (Button)d.btns.Children[1];
+        //        getOKButton = (Button)d.btns.Children[2];
+
+        //        lb.SelectionChanged += Lb_SelectionChanged;
+        //        d.ShowDialog();
+
+        //        loop = d.MessageBoxCode == 1;
+
+
+        //        //txtLabel.Text = "Test String";
+
+        //    }
+        //    while (loop);
+        //}
+
+        //ListBox getListBox;
+        //Button getApplyButton;
+        //Button getOKButton;
 
 
 
-        private void Lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            getApplyButton.IsEnabled = getListBox.SelectedIndex != -1;
-            getOKButton.IsEnabled = getListBox.SelectedIndex != -1;
-        }
+        //private void Lb_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        //{
+        //    getApplyButton.IsEnabled = getListBox.SelectedIndex != -1;
+        //    getOKButton.IsEnabled = getListBox.SelectedIndex != -1;
+        //}
     }
 }

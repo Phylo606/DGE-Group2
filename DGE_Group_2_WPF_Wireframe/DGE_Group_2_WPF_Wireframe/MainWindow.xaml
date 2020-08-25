@@ -149,7 +149,7 @@
                         </StatusBar>
                     </Grid>
                 </TabItem>
-                <TabItem>
+                <!--<TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal" MinWidth="100">
                             <Image Source="resources/add.png"></Image>
@@ -307,7 +307,7 @@
                             </Grid>
                         </GroupBox>
                     </Grid>
-                </TabItem>
+                </TabItem>-->
             </TabControl>
         </Border>
 
