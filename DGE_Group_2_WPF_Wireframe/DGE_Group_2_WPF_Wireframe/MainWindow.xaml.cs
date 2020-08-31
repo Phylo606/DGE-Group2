@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Permissions;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -246,48 +248,48 @@ namespace DGE_Group_2_WPF_Wireframe
 
                 }
                 //
+                // 
+                // Doesn't look like you need this ˅˅˅
                 //
-                //
-                //
-                Check checkinFound = null;
+                //Check checkinFound = null;
 
-                if (_directioncombo.SelectedIndex == 1)
-                {
+                //if (_directioncombo.SelectedIndex == 1)
+                //{
 
 
-                    foreach (var item in checks)
-                    {
-                        if (item.Class == _roomid.SelectedItem && item.User.Id == _userid.Text && item.DateIn.DayOfYear == _actiondate.SelectedDate.Value.DayOfYear && item.DateIn.TimeOfDay <= TimeSpan.Parse(_actiontime.Text) && item.DateOut == null)
-                        {
-                            var totalLength = (TimeSpan.Parse(_actiontime.Text) - item.DateIn.TimeOfDay);
-                            var dd = (MessageBox.Show($"Is this what you are checking out of?\r\r" +
-                                $"{item.Class}" +
-                                $"{item.User}" +
-                                $"check in since {item.DateIn}\r\r" +
-                                $"WARNING: Make sure the check in time is correct before finishing. This may or may not be the desired block, as any block on the day with the check in date before the checkout date and no existing checkout date is highlighted.\r" +
-                                $"Proposed attendence length: {totalLength.TotalHours} hours {totalLength.TotalMinutes} minutes.  \r" +
-                                $"\r\r" +
-                                $"Click Yes to finish" +
-                                $"Click No to find next" +
-                                $"Click Cancel to cancel search",
-                                "Results", MessageBoxButton.YesNoCancel, MessageBoxImage.Information));
+                //    foreach (var item in checks)
+                //    {
+                //        if (item.Class == _roomid.SelectedItem && item.User.Id == _userid.Text && item.DateIn.DayOfYear == _actiondate.SelectedDate.Value.DayOfYear && item.DateIn.TimeOfDay <= TimeSpan.Parse(_actiontime.Text) && item.DateOut == null)
+                //        {
+                //            var totalLength = (TimeSpan.Parse(_actiontime.Text) - item.DateIn.TimeOfDay);
+                //            var dd = (MessageBox.Show($"Is this what you are checking out of?\r\r" +
+                //                $"{item.Class}" +
+                //                $"{item.User}" +
+                //                $"check in since {item.DateIn}\r\r" +
+                //                $"WARNING: Make sure the check in time is correct before finishing. This may or may not be the desired block, as any block on the day with the check in date before the checkout date and no existing checkout date is highlighted.\r" +
+                //                $"Proposed attendence length: {totalLength.TotalHours} hours {totalLength.TotalMinutes} minutes.  \r" +
+                //                $"\r\r" +
+                //                $"Click Yes to finish" +
+                //                $"Click No to find next" +
+                //                $"Click Cancel to cancel search",
+                //                "Results", MessageBoxButton.YesNoCancel, MessageBoxImage.Information));
 
-                            if (dd == MessageBoxResult.Cancel) return;
-                            if (dd == MessageBoxResult.Yes)
-                            {
-                                checkinFound = item;
-                                break;
-                            }
-                        }
-                    }
+                //            if (dd == MessageBoxResult.Cancel) return;
+                //            if (dd == MessageBoxResult.Yes)
+                //            {
+                //                checkinFound = item;
+                //                break;
+                //            }
+                //        }
+                //    }
 
-                    if (checkinFound == null) throw new Exception("Either no results were found or the user skipped through the results. Please make sure that you have entered the correct data and a checkout time that is greater than or equal to a check in time on the same day.");
+                //    if (checkinFound == null) throw new Exception("Either no results were found or the user skipped through the results. Please make sure that you have entered the correct data and a checkout time that is greater than or equal to a check in time on the same day.");
 
 
 
 
 
-                }
+                //}
                 var d = MessageBox.Show(
                        $"Are you certain this what you are doing?\r" +
                        $"\r" +
@@ -305,24 +307,50 @@ namespace DGE_Group_2_WPF_Wireframe
                     if (_directioncombo.SelectedIndex == 0)
                     {
 
-                        //do stuff (check in)
-
+                        HttpClient client = new HttpClient();
+                        client.BaseAddress = new Uri("https://dgeapi20200827151903.azurewebsites.net");
+                        client.DefaultRequestHeaders.Accept.Add(
+                          new MediaTypeWithQualityHeaderValue("application/json"));
+                        var url = "?value=<parameters><PUSERID>" + _userid.Text + "</PUSERID><PSTARTTIME>" + _actiondate.SelectedDate.Value.ToLongTimeString() + "</PSTARTTIME><PROOM>" + _roomid.Text + "</PROOM><PTYPE>" + _roomtype.Text + "</PTYPE></parameters>";
+                        var response = client.PostAsJsonAsync("api/employee", url).Result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("session added");
+                        }
+                        else
+                        {
+                            throw new Exception("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        }
                     }
                     else
                     {
 
-                        //do stuff (check out) (with checkinFound)
+                        HttpClient client = new HttpClient();
+                        client.BaseAddress = new Uri("https://dgeapi20200827151903.azurewebsites.net");
+                        client.DefaultRequestHeaders.Accept.Add(
+                          new MediaTypeWithQualityHeaderValue("application/json"));
+                        var url = "1?value=<parameters><PUSERID>" + _userid + "</PUSERID><PENDTIME>" + _actiondate.SelectedDate.Value.ToLongTimeString() + "</PENDTIME></parameters>";
+                        var response = client.PutAsJsonAsync("api/employee", url).Result;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            MessageBox.Show("session added");
+                        }
+                        else
+                        {
+                            throw new Exception("Error Code" + response.StatusCode + " : Message - " + response.ReasonPhrase);
+                        }
+
 
                     }
 
 
                 }
 
-                
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message + $" ({ex.GetType()})", "Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message + $" ({ex.GetType()})", "Invalid or Failed", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -693,6 +721,112 @@ namespace DGE_Group_2_WPF_Wireframe
         {
 
         }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var userid = txtLoginUserID.Text.Trim();
+                var password = pwbLoginPassword.Password;
+
+                if (userid == "")
+                {
+                    throw new ArgumentException("Please enter a username.");
+                }
+                if (password == "")
+                {
+                    throw new ArgumentException("Please enter a password.");
+                }
+
+                //password is incorrect
+                if (!(userid == "student1" && password == "password1") && !(userid == "teacher1" && password == "password2")) //placeholder code
+                {
+                    throw new Exception("Username or password incorrect. Please make sure you have entered it correctly and try again.");
+                }
+
+
+                //
+                //
+                // do stuff
+                //
+                //
+                //
+
+                {
+                    //
+                    //
+                    // do stuff
+                    //
+                    //
+                    //
+                    locked = false;
+                    userId = userid;
+                    grdLogin.Visibility = Visibility.Collapsed;
+                    pwbLoginPassword.Password = "";
+                    _maintabs.Visibility = Visibility.Visible;
+
+                    _userid.Text = userId;
+                    _actiondate.SelectedDate = DateTime.Today;
+
+
+                }
+
+            }
+            catch (Exception ex) //bounce
+            {
+                MessageBox.Show(ex.Message + $" ({ex.GetType()})", "Invalid or Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            }
+        }
+
+        
+        bool locked = true;
+        public string userId = "";
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            grdLogin.Visibility = Visibility.Visible;
+            _maintabs.Visibility = Visibility.Collapsed;
+
+
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to log out?", "Logout", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation) != MessageBoxResult.OK) //effect word: NOT equal to
+            {
+                e.Cancel = true;
+
+            }
+        }
+
+        private void btnHomeCheck_Click(object sender, RoutedEventArgs e)
+        {
+            _maintabs.SelectedIndex = 1;
+        }
+
+        private void btnHomeReport_Click(object sender, RoutedEventArgs e)
+        {
+            _maintabs.SelectedIndex = 2;
+
+        }
+
+        private void btnHomeLogout_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to log out?", "Logout", MessageBoxButton.OKCancel, MessageBoxImage.Exclamation) == MessageBoxResult.OK)// effect word: EQUAL to
+            {
+                locked = true;
+                _maintabs.Visibility = Visibility.Collapsed;
+                grdLogin.Visibility = Visibility.Visible;
+
+            }
+        }
+
+        private void btnHomeExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+
 
         //private void ToggleButton_Checked(object sender, RoutedEventArgs e)
         //{

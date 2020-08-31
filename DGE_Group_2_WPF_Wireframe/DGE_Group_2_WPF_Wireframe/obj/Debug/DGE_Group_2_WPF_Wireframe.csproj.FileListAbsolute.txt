@@ -45,3 +45,8 @@ C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_
 C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\obj\Debug\DGE_Group_2_WPF_Wireframe.pdb
 C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\obj\Debug\Dialog.g.cs
 C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\obj\Debug\Dialog.baml
+C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\bin\Debug\Newtonsoft.Json.xml
+C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\jorda\source\repos\2020\DGE-Group2\DGE_Group_2_WPF_Wireframe\DGE_Group_2_WPF_Wireframe\obj\Debug\DGE_Group_2_WPF_Wireframe.csproj.CopyComplete
